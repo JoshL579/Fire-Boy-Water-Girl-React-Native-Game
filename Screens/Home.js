@@ -53,9 +53,9 @@ export const Home = () => {
                 style={{
                     // width: Constants.MAX_WIDTH,
                     // height: Constants.MAX_WIDTH,
-                    width: '100%',
-                    height: '100%',
-                    flex: null,
+                    // width: '100vw',
+                    // height: '100vh',
+                    flex: 1,
                     backgroundColor: "white",
                 }}
                 entities={{
@@ -120,23 +120,24 @@ export const Home = () => {
                             <View style={styles.controlBtn} />
                         </TouchableOpacity>
                     </View>
+                    {!isGameRunning && (
+                        <TouchableOpacity onPress={resetGame}>
+                            <Text
+                                style={{
+                                    color: "white",
+                                    marginTop: 15,
+                                    fontSize: 22,
+                                    padding: 10,
+                                    backgroundColor: "grey",
+                                    borderRadius: 10
+                                }}
+                            >
+                                Start New Game
+                            </Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
-                {!isGameRunning && (
-                    <TouchableOpacity onPress={resetGame}>
-                        <Text
-                            style={{
-                                color: "white",
-                                marginTop: 15,
-                                fontSize: 22,
-                                padding: 10,
-                                backgroundColor: "grey",
-                                borderRadius: 10
-                            }}
-                        >
-                            Start New Game
-                    </Text>
-                    </TouchableOpacity>
-                )}
+
             </View>
 
         </View>
@@ -145,12 +146,13 @@ export const Home = () => {
 
 const styles = StyleSheet.create({
     canvas: {
-        flex: 1,
         backgroundColor: "#000000",
         alignItems: "center",
         justifyContent: "center",
-        width: '100%',
-        height: '100%'
+        // width: '100%',
+        // height: '100%'
+        flex: 1,
+        padding: 20
     },
     controllerRoot: {
         position: 'relative'
