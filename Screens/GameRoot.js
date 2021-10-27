@@ -9,13 +9,16 @@ export const GameRoot = () => {
     const engineRef = useRef(null);
 
     const { width, height } = Dimensions.get("screen");
-    const boxSize = Math.trunc(Math.max(width, height) * 0.075);
+    const floorHeight = 30
+    const boxSize = Math.trunc(Math.max(width, height) * 0.04);
+    const floorSize = Math.trunc(Math.max(width, height) * 0.03);
     const initialBox = Matter.Bodies.rectangle(width / 2, height / 2, boxSize, boxSize);
-    const floor = Matter.Bodies.rectangle(width / 2, height - boxSize / 2, width, boxSize, { isStatic: true });
+    const floor = Matter.Bodies.rectangle(width / 2, height - floorSize / 2, width, floorSize, { isStatic: true });
+    const floor2 = Matter.Bodies.rectangle(width / 2, height * 2 / 3, width / 3, floorHeight, { isStatic: true });
 
     const engine = Matter.Engine.create({ enableSleeping: false });
     const world = engine.world;
-    Matter.World.add(world, [initialBox, floor]);
+    Matter.World.add(world, [initialBox, floor, floor2]);
 
     const Physics = (entities, { touches, time, events, dispatch }) => {
         let engine = entities.physics.engine;
@@ -26,16 +29,18 @@ export const GameRoot = () => {
                     case "jump":
                         Matter.Body.setVelocity(entities.initialBox.body, {
                             x: 0,
-                            y: -8
+                            y: -6
                         })
                         return;
-                    case "left":
+                    case "left":                        
+                        if (entities.initialBox.body.position.x <= 20) return;
                         Matter.Body.translate(entities.initialBox.body, {
                             x: -2,
                             y: 0
                         })
                         return;
                     case "right":
+                        if (entities.initialBox.body.position.x >= width - 70) return;
                         Matter.Body.translate(entities.initialBox.body, {
                             x: 2,
                             y: 0
@@ -92,10 +97,16 @@ export const GameRoot = () => {
                     },
                     floor: {
                         body: floor,
-                        size: [width, boxSize],
+                        size: [width, floorSize],
                         color: "green",
                         renderer: Human
-                    }
+                    },
+                    floor2: {
+                        body: floor2,
+                        size: [width / 3, floorHeight],
+                        color: "green",
+                        renderer: Human
+                    },
                 }}
             />
             <View style={styles.btnContainer}>
